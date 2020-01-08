@@ -1,0 +1,30 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppThemeAddActivity" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MyCardViewStyle" parent="CardView">
+        <item name="android:layout_marginBottom">@dimen/recycler_card_margin</item>
+        <item name="android:paddingStart">@dimen/recycler_card_padding</item>
+        <item name="android:paddingEnd">@dimen/recycler_card_padding</item>
+        <item name="android:paddingTop">@dimen/recycler_card_padding</item>
+        <item name="android:paddingBottom">@dimen/recycler_card_padding_bottom</item>
+        <item name="android:background">@drawable/ripple_recycler_card</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+</resources>
