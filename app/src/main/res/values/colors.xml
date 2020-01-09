@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#363738</color>
     <color name="colorPrimaryDark">#363738</color>
-    <color name="colorAccent">#ffffff</color>
+    <color name="colorAccent">#64B5F6</color>
     <color name="colorClickItemRecycler">#909499</color>
 
     <color name="colorMainText">#e1e3e6</color>
@@ -10,4 +10,6 @@
     <color name="colorBackground">#19191a</color>
     <color name="colorBackground2">#2c2d2e</color>
     <color name="colorFloatButton">#64B5F6</color>
+    <color name="colorFloatButton2">#4CAF50</color>
+    <color name="colorFloatButton3">#F44336</color>
 </resources>
