@@ -1,14 +1,9 @@
 package com.selfvsself.movieswatch.Presenter;
 
-import androidx.cardview.widget.CardView;
-
-import com.selfvsself.movieswatch.AppModule;
-import com.selfvsself.movieswatch.DaggerAppComponent;
 import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.RecyclerAdapter;
-import com.selfvsself.movieswatch.Model.Repository;
+import com.selfvsself.movieswatch.Model.Repository.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;

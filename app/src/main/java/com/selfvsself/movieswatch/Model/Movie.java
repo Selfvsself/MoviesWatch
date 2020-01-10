@@ -7,6 +7,7 @@ public class Movie {
     private String title;
     private String genre;
     private String description;
+    private String rating;
 
     public Movie() {
     }
@@ -39,6 +40,14 @@ public class Movie {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
     public boolean isFiltered(String string) {

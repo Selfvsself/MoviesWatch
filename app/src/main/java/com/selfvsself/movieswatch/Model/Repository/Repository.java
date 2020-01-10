@@ -1,13 +1,20 @@
-package com.selfvsself.movieswatch.Model;
+package com.selfvsself.movieswatch.Model.Repository;
+
+import com.selfvsself.movieswatch.Model.Movie;
+import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dagger.Module;
-import dagger.Provides;
 
 @Module
 public class Repository {
+
+    private DBRepository dbRepository;
+
+    public Repository() {
+    }
 
     public List<Movie> getAllMovies() {
         List<Movie> list = new ArrayList<>();

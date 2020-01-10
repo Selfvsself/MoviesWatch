@@ -1,6 +1,6 @@
 package com.selfvsself.movieswatch.Presenter;
 
-import com.selfvsself.movieswatch.Model.Repository;
+import com.selfvsself.movieswatch.Model.Repository.Repository;
 import com.selfvsself.movieswatch.View.AddMovieActivityView;
 
 public class AddMoviePresenter implements IAddMoviePresenter{
