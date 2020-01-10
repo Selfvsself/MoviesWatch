@@ -15,19 +15,15 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
 
-    private LayoutInflater inflater;
-    private Context context;
     private List<Movie> movieList;
 
-    public RecyclerAdapter(Context context, List<Movie> movieList) {
-        this.context = context;
-        this.inflater = LayoutInflater.from(context);
+    public RecyclerAdapter(List<Movie> movieList) {
         this.movieList = movieList;
     }
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.recycler_view_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
         return new MyViewHolder(view);
     }
 

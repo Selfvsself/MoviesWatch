@@ -1,10 +1,8 @@
 package com.selfvsself.movieswatch.Presenter;
 
-import com.selfvsself.movieswatch.Model.Movie;
-
-import java.util.List;
+import com.selfvsself.movieswatch.Model.RecyclerAdapter;
 
 public interface IMainPresenter {
 
-    public List<Movie> getAllMovies();
+    public RecyclerAdapter getRecyclerAdapter();
 }

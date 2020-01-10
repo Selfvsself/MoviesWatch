@@ -9,16 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.selfvsself.movieswatch.AndroidApplication;
-import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.RecyclerAdapter;
 import com.selfvsself.movieswatch.Presenter.IMainPresenter;
 import com.selfvsself.movieswatch.R;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityView{
 
     private FloatingActionButton floatingActionButton;
 
@@ -30,9 +27,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((AndroidApplication) getApplication()).getAppComponent().inject(this);
-
-
-        List<Movie> list = presenter.getAllMovies();
 
         floatingActionButton = findViewById(R.id.floatingActionButton);
 
@@ -46,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerAdapter adapter = new RecyclerAdapter(this, list);
+        RecyclerAdapter adapter = presenter.getRecyclerAdapter();
         recyclerView.setAdapter(adapter);
     }
 }

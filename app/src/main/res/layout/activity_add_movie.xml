@@ -80,6 +80,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/inputTitle"
                     android:singleLine="true"
                     android:textColor="@color/colorMainText"
                     android:textSize="16sp"
@@ -96,7 +97,7 @@
                 app:hintTextAppearance="@style/MyHintText">
 
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/autoCompleteTextView"
+                    android:id="@+id/inputGenre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -117,6 +118,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/inputDescription"
                     android:textColor="@color/colorMainText"
                     android:textSize="16sp"
                     android:theme="@style/MyEditText" />
@@ -126,7 +128,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView333"
+                android:id="@+id/textViewAssessment"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
