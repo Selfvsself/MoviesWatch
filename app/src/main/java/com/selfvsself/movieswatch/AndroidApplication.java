@@ -13,6 +13,6 @@ public class AndroidApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        appComponent = DaggerAppComponent.builder().appModule(new AppModule()).build();
+        appComponent = DaggerAppComponent.builder().contextModule(new ContextModule(this)).appModule(new AppModule()).build();
     }
 }

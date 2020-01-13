@@ -72,6 +72,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/textTitleInputLayout"
                 android:layout_marginTop="8dp"
                 android:hint="Title"
                 android:textColorHint="@color/colorSecondText"

@@ -1,5 +1,6 @@
 package com.selfvsself.movieswatch.Presenter;
 
+import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.View.AddMovieActivityView;
 
 public interface IAddMoviePresenter {
@@ -9,4 +10,6 @@ public interface IAddMoviePresenter {
     public void setProgressSeekBar(int progress);
 
     public void setView(AddMovieActivityView view);
+
+    public boolean saveMovie();
 }

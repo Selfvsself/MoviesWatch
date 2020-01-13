@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,9 +31,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        holder.textTitle.setText(movieList.get(position).getTitle());
-//        holder.textGenre.setText(movieList.get(position).getGenre());
-//        holder.textDescription.setText(movieList.get(position).getDescription());
+        holder.textTitle.setText(movieList.get(position).getTitle());
+        holder.textGenre.setText(movieList.get(position).getGenre());
+        holder.textRating.setText(movieList.get(position).getRating());
+        holder.textDescription.setText(movieList.get(position).getDescription());
     }
 
     @Override
@@ -39,21 +42,19 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         return movieList.size();
     }
 
-    public void setList(List<Movie> list) {
-        movieList = list;
-    }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-//        final TextView textTitle, textGenre, textDescription;
-        public LinearLayout viewForeground, viewBackground;
+        final TextView textTitle, textGenre, textDescription, textRating;
+        public RelativeLayout viewForeground, viewBacground;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-//            textTitle = itemView.findViewById(R.id.item_title);
-//            textGenre = itemView.findViewById(R.id.item_genre);
-//            textDescription = itemView.findViewById(R.id.item_description);
-//            viewForeground = itemView.findViewById(R.id.itemCardView);
+            textTitle = itemView.findViewById(R.id.item_title);
+            textGenre = itemView.findViewById(R.id.item_genre);
+            textDescription = itemView.findViewById(R.id.item_description);
+            textRating = itemView.findViewById(R.id.item_rating);
+            viewForeground = itemView.findViewById(R.id.itemCardView);
+            viewBacground = itemView.findViewById(R.id.background);
         }
     }
 }

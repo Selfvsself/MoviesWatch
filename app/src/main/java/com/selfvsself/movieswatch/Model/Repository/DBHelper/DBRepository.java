@@ -1,7 +1,6 @@
 package com.selfvsself.movieswatch.Model.Repository.DBHelper;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -15,8 +14,7 @@ public class DBRepository {
     private SQLiteDatabase database;
     private List<Movie> movieList;
 
-    public DBRepository(Context context) {
-        DBHelper dbHelper = new DBHelper(context);
+    public DBRepository(DBHelper dbHelper) {
         database = dbHelper.getWritableDatabase();
     }
 

@@ -1,5 +1,6 @@
 package com.selfvsself.movieswatch.Presenter;
 
+import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.Repository.Repository;
 import com.selfvsself.movieswatch.View.AddMovieActivityView;
 
@@ -27,6 +28,25 @@ public class AddMoviePresenter implements IAddMoviePresenter{
     @Override
     public void setView(AddMovieActivityView view) {
         this.view = view;
+    }
+
+    @Override
+    public boolean saveMovie() {
+        boolean isSaved = false;
+        boolean isNotExist = repository.checkThatDoesNotExist(view.getMovieTitle());
+        if (view.getMovieTitle().length() > 0 && isNotExist) {
+            Movie movie = new Movie();
+            movie.setTitle(view.getMovieTitle());
+            movie.setGenre(view.getMovieGenre());
+            movie.setDescription(view.getMovieDescription());
+            String rating = String.valueOf(2.5 + (view.getMovieRating() >> 1));
+            movie.setRating(rating);
+            repository.addMovies(movie);
+            isSaved = true;
+        } else {
+            view.setErrorMsgInTitle("Incorrect movie title");
+        }
+        return isSaved;
     }
 
     private String getAssessment(int progress) {

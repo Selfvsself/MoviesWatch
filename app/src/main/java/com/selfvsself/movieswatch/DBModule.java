@@ -1,5 +1,10 @@
 package com.selfvsself.movieswatch;
 
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+
+import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBHelper;
 import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBRepository;
 import com.selfvsself.movieswatch.Model.Repository.Repository;
 import com.selfvsself.movieswatch.Presenter.AddMoviePresenter;
@@ -12,24 +17,16 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = DBModule.class)
-public class AppModule {
+@Module(includes = ContextModule.class)
+public class DBModule {
 
-    @Singleton
     @Provides
-    public Repository getRepository(DBRepository dbRepository) {
-        return new Repository(dbRepository);
+    public DBHelper getDBHelper(Context context) {
+        return new DBHelper(context);
     }
 
-    @Singleton
     @Provides
-    public IMainPresenter getMainPresenter(Repository repository) {
-        return new MainPresenter(repository);
-    }
-
-    @Singleton
-    @Provides
-    public IAddMoviePresenter getAddMoviePresenter(Repository repository) {
-        return new AddMoviePresenter(repository);
+    public DBRepository getDBRepository(DBHelper dbHelper) {
+        return new DBRepository(dbHelper);
     }
 }

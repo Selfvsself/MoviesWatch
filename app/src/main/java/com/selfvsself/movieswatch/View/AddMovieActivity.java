@@ -1,6 +1,8 @@
 package com.selfvsself.movieswatch.View;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.selfvsself.movieswatch.AndroidApplication;
 import com.selfvsself.movieswatch.Presenter.IAddMoviePresenter;
 import com.selfvsself.movieswatch.R;
@@ -29,6 +32,7 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
     private ImageButton btnCancel;
     private TextView btnSave;
     private TextInputEditText inputTitle, inputDescription;
+    private TextInputLayout inputTitleLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
         addMoviePresenter.setView(this);
 
         inputTitle = findViewById(R.id.inputTitle);
+        inputTitleLayout = findViewById(R.id.textTitleInputLayout);
         inputDescription = findViewById(R.id.inputDescription);
         inputGenre = findViewById(R.id.inputGenre);
         inputGenre.setAdapter(new ArrayAdapter<>(this,
@@ -73,7 +78,10 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                boolean isSaved = addMoviePresenter.saveMovie();
+                if (isSaved) {
+                    finish();
+                }
             }
         });
     }
@@ -87,5 +95,30 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
     @Override
     public void setAssessmentText(String message) {
         textViewAssessment.setText(message);
+    }
+
+    @Override
+    public String getMovieTitle() {
+        return inputTitle.getText().toString();
+    }
+
+    @Override
+    public String getMovieGenre() {
+        return inputGenre.getText().toString();
+    }
+
+    @Override
+    public String getMovieDescription() {
+        return inputDescription.getText().toString();
+    }
+
+    @Override
+    public int getMovieRating() {
+        return seekBar.getProgress();
+    }
+
+    @Override
+    public void setErrorMsgInTitle(String errorMsg) {
+        inputTitleLayout.setError(errorMsg);
     }
 }

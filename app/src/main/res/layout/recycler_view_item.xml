@@ -1,32 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    style="@style/MyCardViewStyle">
+    android:orientation="vertical">
 
-        <TextView
+    <RelativeLayout
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorEdit"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_black_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/itemCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MyCardViewStyle">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Movie 1"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorMainText"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Genre"
-            android:textSize="16sp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/colorSecondText"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:textSize="14sp"
-            android:layout_marginTop="13dp"
-            android:textColor="@color/colorSecondText"/>
+                <TextView
+                    android:id="@+id/item_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Movie 1"
+                    android:textColor="@color/colorMainText"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/item_genre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Genre"
+                    android:textColor="@color/colorSecondText"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/item_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="Description"
+                    android:textColor="@color/colorSecondText"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_weight="0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="Rating"
+                    android:textColor="@color/colorSecondText"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/item_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="5.0"
+                    android:textColor="@color/colorMainText"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>
