@@ -1,4 +1,4 @@
-package com.selfvsself.movieswatch;
+package com.selfvsself.movieswatch.DI;
 
 import android.content.Context;
 

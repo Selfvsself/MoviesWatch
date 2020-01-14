@@ -4,6 +4,7 @@ import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBRepository;
 import com.selfvsself.movieswatch.Presenter.IRepMainPresenter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dagger.Module;
@@ -13,22 +14,36 @@ public class Repository {
 
     private DBRepository dbRepository;
     private IRepMainPresenter mainPresenter;
-
+    private List<Movie> movieList = new ArrayList<>();
     public Repository(DBRepository dbRepository) {
         this.dbRepository = dbRepository;
     }
 
     public void addMovies(Movie movie) {
         dbRepository.addMovie(movie);
+        movieList.add(movie);
         mainPresenter.notifyAboutAddingMovie(movie);
     }
 
-    public void deleteMovie(Movie movie) {
-        dbRepository.deleteMovie(movie);
+    public void editMovies(Movie movie) {
+        dbRepository.update(movie);
+        mainPresenter.notifyAboutEditMovie(movie);
+    }
+
+    public Movie deleteMovie(int index) {
+        Movie deleteMovie = movieList.get(index);
+        movieList.remove(index);
+        dbRepository.deleteMovie(deleteMovie);
+        return deleteMovie;
     }
 
     public List<Movie> getAllMovies() {
-        return dbRepository.readAll();
+        if (movieList.size() == 0) movieList = dbRepository.readAll();
+        return movieList;
+    }
+
+    public Movie getMovie(int index) {
+        return movieList.get(index);
     }
 
     public String[] getAllGenres() {
@@ -50,7 +65,7 @@ public class Repository {
 
     public boolean checkThatDoesNotExist(String title) {
         boolean isNotExist = true;
-        List<Movie> tmpList = dbRepository.readAll();
+        List<Movie> tmpList = movieList;
         for (Movie movie : tmpList) {
             if (movie.getTitle().equalsIgnoreCase(title)) {
                 isNotExist = false;

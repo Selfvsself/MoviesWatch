@@ -10,7 +10,7 @@ public interface AddMovieActivityView {
 
     public String getMovieDescription();
 
-    public int getMovieRating();
+    public String getMovieRating();
 
     public void setErrorMsgInTitle(String errorMsg);
 }

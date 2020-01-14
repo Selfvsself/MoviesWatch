@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textTitle.setText(movieList.get(position).getTitle());
         holder.textGenre.setText(movieList.get(position).getGenre());
-        holder.textRating.setText(movieList.get(position).getRating());
+        holder.textRating.setText(movieList.get(position).getFormattedRating());
         holder.textDescription.setText(movieList.get(position).getDescription());
     }
 
@@ -46,6 +47,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         final TextView textTitle, textGenre, textDescription, textRating;
         public RelativeLayout viewForeground, viewBacground;
+        public ImageView editIcon, deleteIcon;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,6 +57,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             textRating = itemView.findViewById(R.id.item_rating);
             viewForeground = itemView.findViewById(R.id.itemCardView);
             viewBacground = itemView.findViewById(R.id.background);
+            editIcon = itemView.findViewById(R.id.editIcon);
+            deleteIcon = itemView.findViewById(R.id.deleteIcon);
         }
     }
 }

@@ -12,6 +12,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".View.AddMovieActivity"
             android:theme="@style/AppThemeAddActivity"></activity>
+        <activity android:name=".View.EditMovieActivity"
+            android:theme="@style/AppThemeAddActivity"></activity>
         <activity android:name=".View.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

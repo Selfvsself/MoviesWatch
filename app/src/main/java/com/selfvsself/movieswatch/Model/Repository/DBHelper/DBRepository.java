@@ -34,6 +34,7 @@ public class DBRepository {
                 null,null,null,null);
 
         if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(DBHelper.MOVIE_ID);
             int titleIndex = cursor.getColumnIndex(DBHelper.MOVIE_TITLE);
             int genreIndex = cursor.getColumnIndex(DBHelper.MOVIE_GENRE);
             int descriptionIndex = cursor.getColumnIndex(DBHelper.MOVIE_DESCRIPTION);
@@ -41,6 +42,7 @@ public class DBRepository {
 
             do {
                 Movie addMovie = new Movie();
+                addMovie.setId(cursor.getInt(idIndex));
                 addMovie.setTitle(cursor.getString(titleIndex));
                 addMovie.setGenre(cursor.getString(genreIndex));
                 addMovie.setDescription(cursor.getString(descriptionIndex));
@@ -54,6 +56,16 @@ public class DBRepository {
 
     public void deleteMovie(Movie movie) {
         database.delete(DBHelper.DATABASE_NAME,
-                DBHelper.MOVIE_TITLE + "= ?", new String[] {movie.getTitle()});
+                DBHelper.MOVIE_ID + "= ?", new String[] {movie.getId()});
+    }
+
+    public void update(Movie movie) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBHelper.MOVIE_TITLE, movie.getTitle());
+        contentValues.put(DBHelper.MOVIE_GENRE, movie.getGenre());
+        contentValues.put(DBHelper.MOVIE_DESCRIPTION, movie.getDescription());
+        contentValues.put(DBHelper.MOVIE_RATING, movie.getRating());
+        database.update(DBHelper.DATABASE_NAME, contentValues, DBHelper.MOVIE_ID + " = ?",
+                new String[] {movie.getId()});
     }
 }

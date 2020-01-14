@@ -9,7 +9,8 @@ import androidx.annotation.Nullable;
 public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "movies_database";
-    public static final String MOVIE_TITLE  = "_title";
+    public static final String MOVIE_ID = "_id";
+    public static final String MOVIE_TITLE  = "title";
     public static final String MOVIE_GENRE = "genre";
     public static final String MOVIE_DESCRIPTION = "description";
     public static final String MOVIE_RATING = "rating";
@@ -20,8 +21,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(String.format("CREATE TABLE %s ( %s TEXT PRIMARY KEY, %s TEXT, %s TEXT, %s INTEGER );",
-                DATABASE_NAME, MOVIE_TITLE, MOVIE_GENRE, MOVIE_DESCRIPTION, MOVIE_RATING));
+        db.execSQL(String.format("CREATE TABLE %s ( %s integer primary key autoincrement, %s TEXT, %s TEXT, %s TEXT, %s INTEGER );",
+                DATABASE_NAME, MOVIE_ID, MOVIE_TITLE, MOVIE_GENRE, MOVIE_DESCRIPTION, MOVIE_RATING));
     }
 
     @Override

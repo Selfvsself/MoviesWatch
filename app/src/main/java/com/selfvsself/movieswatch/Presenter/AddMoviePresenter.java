@@ -39,9 +39,31 @@ public class AddMoviePresenter implements IAddMoviePresenter{
             movie.setTitle(view.getMovieTitle());
             movie.setGenre(view.getMovieGenre());
             movie.setDescription(view.getMovieDescription());
-            String rating = String.valueOf(2.5 + (view.getMovieRating() >> 1));
-            movie.setRating(rating);
+            movie.setRating(view.getMovieRating());
             repository.addMovies(movie);
+            isSaved = true;
+        } else {
+            view.setErrorMsgInTitle("Incorrect movie title");
+        }
+        return isSaved;
+    }
+
+    @Override
+    public Movie getMovie(int index) {
+        return repository.getMovie(index);
+    }
+
+    @Override
+    public boolean editMovie(int id) {
+        boolean isSaved = false;
+        if (view.getMovieTitle().length() > 0) {
+            Movie movie = new Movie();
+            movie.setId(id);
+            movie.setTitle(view.getMovieTitle());
+            movie.setGenre(view.getMovieGenre());
+            movie.setDescription(view.getMovieDescription());
+            movie.setRating(view.getMovieRating());
+            repository.editMovies(movie);
             isSaved = true;
         } else {
             view.setErrorMsgInTitle("Incorrect movie title");

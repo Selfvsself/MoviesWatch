@@ -1,4 +1,4 @@
-package com.selfvsself.movieswatch;
+package com.selfvsself.movieswatch.DI;
 
 import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBRepository;
 import com.selfvsself.movieswatch.Model.Repository.Repository;

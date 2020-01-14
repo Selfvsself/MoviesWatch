@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.RecyclerAdapter;
+import com.selfvsself.movieswatch.R;
 
 public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
@@ -55,6 +56,18 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         View foregroundView = ((RecyclerAdapter.MyViewHolder) viewHolder).viewForeground;
+        View backgroundView = ((RecyclerAdapter.MyViewHolder) viewHolder).viewBacground;
+        View editIcon = ((RecyclerAdapter.MyViewHolder) viewHolder).editIcon;
+        View deleteIcon = ((RecyclerAdapter.MyViewHolder) viewHolder).deleteIcon;
+        if (dX < 0) {
+            backgroundView.setBackgroundResource(R.color.colorFloatButton3);
+            editIcon.setVisibility(View.INVISIBLE);
+            deleteIcon.setVisibility(View.VISIBLE);
+        } else {
+            backgroundView.setBackgroundResource(R.color.colorFloatButton2);
+            editIcon.setVisibility(View.VISIBLE);
+            deleteIcon.setVisibility(View.INVISIBLE);
+        }
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
     }
 

@@ -22,17 +22,22 @@ import javax.inject.Inject;
 
 public class AddMovieActivity extends AppCompatActivity implements AddMovieActivityView{
 
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_GENRE = "genre";
+    public static final String KEY_DESC = "description";
+    public static final String KEY_RATING = "rating";
+
     @Inject
     IAddMoviePresenter addMoviePresenter;
 
     AutoCompleteTextView inputGenre;
 
-    private SeekBar seekBar;
-    private TextView textViewAssessment;
-    private ImageButton btnCancel;
-    private TextView btnSave;
-    private TextInputEditText inputTitle, inputDescription;
-    private TextInputLayout inputTitleLayout;
+    SeekBar seekBar;
+    private TextView textViewAssessment, textRating;
+    ImageButton btnCancel;
+    TextView btnSave;
+    TextInputEditText inputTitle, inputDescription;
+    TextInputLayout inputTitleLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +55,16 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
 
         seekBar = findViewById(R.id.seekBar);
         textViewAssessment = findViewById(R.id.textViewAssessment);
+        textRating = findViewById(R.id.textRating);
         btnSave = findViewById(R.id.buttonSave);
         btnCancel = findViewById(R.id.buttonCancel);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 addMoviePresenter.setProgressSeekBar(progress);
+                String str = String.valueOf(progress);
+                float formattedRating= 2.5f + Float.parseFloat(str) / 2;
+                textRating.setText(String.valueOf(formattedRating));
             }
 
             @Override
@@ -113,8 +122,8 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
     }
 
     @Override
-    public int getMovieRating() {
-        return seekBar.getProgress();
+    public String getMovieRating() {
+        return String.valueOf(seekBar.getProgress());
     }
 
     @Override

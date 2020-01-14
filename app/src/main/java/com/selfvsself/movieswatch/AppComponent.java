@@ -2,6 +2,9 @@ package com.selfvsself.movieswatch;
 
 import android.content.Context;
 
+import com.selfvsself.movieswatch.DI.AppModule;
+import com.selfvsself.movieswatch.DI.ContextModule;
+import com.selfvsself.movieswatch.DI.DBModule;
 import com.selfvsself.movieswatch.View.AddMovieActivity;
 import com.selfvsself.movieswatch.View.MainActivity;
 

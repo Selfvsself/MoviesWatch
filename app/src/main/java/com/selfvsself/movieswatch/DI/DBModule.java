@@ -1,18 +1,9 @@
-package com.selfvsself.movieswatch;
+package com.selfvsself.movieswatch.DI;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBHelper;
 import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBRepository;
-import com.selfvsself.movieswatch.Model.Repository.Repository;
-import com.selfvsself.movieswatch.Presenter.AddMoviePresenter;
-import com.selfvsself.movieswatch.Presenter.IAddMoviePresenter;
-import com.selfvsself.movieswatch.Presenter.IMainPresenter;
-import com.selfvsself.movieswatch.Presenter.MainPresenter;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
