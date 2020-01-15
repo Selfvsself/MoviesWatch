@@ -33,7 +33,7 @@ public class AddMoviePresenter implements IAddMoviePresenter{
     @Override
     public boolean saveMovie() {
         boolean isSaved = false;
-        boolean isNotExist = repository.checkThatDoesNotExist(view.getMovieTitle());
+        boolean isNotExist = repository.checkThatDoesNotExist(view.getMovieTitle(), -1);
         if (view.getMovieTitle().length() > 0 && isNotExist) {
             Movie movie = new Movie();
             movie.setTitle(view.getMovieTitle());
@@ -56,7 +56,8 @@ public class AddMoviePresenter implements IAddMoviePresenter{
     @Override
     public boolean editMovie(int id) {
         boolean isSaved = false;
-        if (view.getMovieTitle().length() > 0) {
+        boolean isNotExist = repository.checkThatDoesNotExist(view.getMovieTitle(), id);
+        if (view.getMovieTitle().length() > 0 && isNotExist) {
             Movie movie = new Movie();
             movie.setId(id);
             movie.setTitle(view.getMovieTitle());

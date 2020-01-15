@@ -59,14 +59,20 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         View backgroundView = ((RecyclerAdapter.MyViewHolder) viewHolder).viewBacground;
         View editIcon = ((RecyclerAdapter.MyViewHolder) viewHolder).editIcon;
         View deleteIcon = ((RecyclerAdapter.MyViewHolder) viewHolder).deleteIcon;
-        if (dX < 0) {
+        View editText = ((RecyclerAdapter.MyViewHolder) viewHolder).editText;
+        View deleteText = ((RecyclerAdapter.MyViewHolder) viewHolder).deleteText;
+        if (dX > 0) {
             backgroundView.setBackgroundResource(R.color.colorFloatButton3);
             editIcon.setVisibility(View.INVISIBLE);
+            editText.setVisibility(View.INVISIBLE);
             deleteIcon.setVisibility(View.VISIBLE);
+            deleteText.setVisibility(View.VISIBLE);
         } else {
             backgroundView.setBackgroundResource(R.color.colorFloatButton2);
             editIcon.setVisibility(View.VISIBLE);
+            editText.setVisibility(View.VISIBLE);
             deleteIcon.setVisibility(View.INVISIBLE);
+            deleteText.setVisibility(View.INVISIBLE);
         }
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
     }

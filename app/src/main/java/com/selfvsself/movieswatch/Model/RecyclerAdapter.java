@@ -47,6 +47,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         final TextView textTitle, textGenre, textDescription, textRating;
         public RelativeLayout viewForeground, viewBacground;
+        public TextView editText, deleteText;
         public ImageView editIcon, deleteIcon;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -59,6 +60,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             viewBacground = itemView.findViewById(R.id.background);
             editIcon = itemView.findViewById(R.id.editIcon);
             deleteIcon = itemView.findViewById(R.id.deleteIcon);
+            editText = itemView.findViewById(R.id.editText);
+            deleteText = itemView.findViewById(R.id.deleteText);
         }
     }
 }

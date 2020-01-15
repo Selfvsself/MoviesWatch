@@ -13,6 +13,8 @@ public interface IMainPresenter {
 
     public void refreshItem(int position);
 
+    public void searchItem(String searchFilter);
+
     public void sortByName();
     public void sortByNameDown();
     public void sortByGenre();

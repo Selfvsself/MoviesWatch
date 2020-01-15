@@ -1,10 +1,16 @@
 package com.selfvsself.movieswatch.View;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -15,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.selfvsself.movieswatch.AndroidApplication;
 import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.RecyclerAdapter;
@@ -30,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private FloatingActionButton floatingActionButton;
     private CoordinatorLayout rootLayout;
     private BottomSheetBehavior mbottomSheetBehavior;
+    private LinearLayout layoutBottomSheet;
+    private CustomTextView inputSearch;
+    private int maxHeightRootLayout;
+    private boolean isFocusSearchInput = false;
 
     @Inject
     IMainPresenter presenter;
@@ -43,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mbottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
         rootLayout = findViewById(R.id.root_layout);
+        layoutBottomSheet = findViewById(R.id.layoutBottomSheet);
         floatingActionButton = findViewById(R.id.floatingActionButton);
+        inputSearch = findViewById(R.id.inputSearch);
+
+        maxHeightRootLayout = rootLayout.getHeight() - layoutBottomSheet.getHeight();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
 
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallbackRight = new RecyclerItemTouchHelper(0, ItemTouchHelper.RIGHT, new RecyclerItemTouchHelperListener() {
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallbackRight = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, new RecyclerItemTouchHelperListener() {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
                 if (viewHolder instanceof RecyclerAdapter.MyViewHolder) {
@@ -71,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 }
             }
         });
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallbackLeft = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, new RecyclerItemTouchHelperListener() {
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallbackLeft = new RecyclerItemTouchHelper(0, ItemTouchHelper.RIGHT, new RecyclerItemTouchHelperListener() {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
                 if (viewHolder instanceof RecyclerAdapter.MyViewHolder) {
@@ -94,15 +109,48 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         new ItemTouchHelper(itemTouchHelperCallbackRight).attachToRecyclerView(recyclerView);
         new ItemTouchHelper(itemTouchHelperCallbackLeft).attachToRecyclerView(recyclerView);
 
-        recyclerView.setOnClickListener(new View.OnClickListener() {
+        presenter.sortByName();
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                if (mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                    mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                presenter.searchItem(s.toString());
             }
         });
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            if (mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            } else {
+                finish();
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_UP && mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            if (ev.getRawY() <= (rootLayout.getHeight())) {
+                mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -112,15 +160,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Операции для выбранного пункта меню
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.menuSearch:
                 if (mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
+                    mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
                 return true;
             case R.id.menuByName:
                 presenter.sortByName();
@@ -140,8 +186,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             case R.id.menuByRating2:
                 presenter.sortByRatingDown();
                 return true;
-            case R.id.menuSetting:
-                return true;
+//            case R.id.menuSetting:
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

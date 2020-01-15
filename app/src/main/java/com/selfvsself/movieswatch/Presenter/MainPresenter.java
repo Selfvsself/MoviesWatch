@@ -21,13 +21,15 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
     @Inject
     public MainPresenter(Repository repository) {
         this.repository = repository;
-        recyclerAdapter = new RecyclerAdapter(getAllMovies());
+        movieList = new ArrayList<>();
+        getAllMovies();
+        recyclerAdapter = new RecyclerAdapter(movieList);
         repository.setMainPresenter(this);
     }
 
-    private List<Movie> getAllMovies() {
-        movieList = repository.getAllMovies();
-        return movieList;
+    private void getAllMovies() {
+        movieList.clear();
+        movieList.addAll(repository.getAllMovies());
     }
 
     @Override
@@ -38,7 +40,7 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
     @Override
     public Movie deleteMovie(int index) {
         Movie deletedMovie = repository.deleteMovie(index);
-//        movieList.remove(index);
+        movieList.remove(index);
         recyclerAdapter.notifyItemRemoved(index);
         return deletedMovie;
     }
@@ -54,11 +56,25 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
     }
 
     @Override
+    public void searchItem(String searchFilter) {
+        searchFilter = searchFilter.toLowerCase();
+        List<Movie> removeMovie = new ArrayList<>();
+        getAllMovies();
+        for (Movie movie : movieList) {
+            if (!movie.isFiltered(searchFilter)) {
+                removeMovie.add(movie);
+            }
+        }
+        movieList.removeAll(removeMovie);
+        recyclerAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void sortByName() {
         Collections.sort(movieList, new Comparator<Movie>() {
             @Override
             public int compare(Movie o1, Movie o2) {
-                return o1.getTitle().compareTo(o2.getTitle());
+                return o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase());
             }
         });
         recyclerAdapter.notifyDataSetChanged();
@@ -69,7 +85,7 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
         Collections.sort(movieList, new Comparator<Movie>() {
             @Override
             public int compare(Movie o1, Movie o2) {
-                return o2.getTitle().compareTo(o1.getTitle());
+                return o2.getTitle().toLowerCase().compareTo(o1.getTitle().toLowerCase());
             }
         });
         recyclerAdapter.notifyDataSetChanged();
@@ -80,7 +96,7 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
         Collections.sort(movieList, new Comparator<Movie>() {
             @Override
             public int compare(Movie o1, Movie o2) {
-                return o1.getGenre().compareTo(o2.getGenre());
+                return o1.getGenre().toLowerCase().compareTo(o2.getGenre().toLowerCase());
             }
         });
         recyclerAdapter.notifyDataSetChanged();
@@ -91,7 +107,7 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
         Collections.sort(movieList, new Comparator<Movie>() {
             @Override
             public int compare(Movie o1, Movie o2) {
-                return o2.getGenre().compareTo(o1.getGenre());
+                return o2.getGenre().toLowerCase().compareTo(o1.getGenre().toLowerCase());
             }
         });
         recyclerAdapter.notifyDataSetChanged();
@@ -121,7 +137,7 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
 
     @Override
     public void notifyAboutAddingMovie(Movie movie) {
-//        movieList.add(movie);
+        movieList.add(movie);
         recyclerAdapter.notifyItemInserted(movieList.size() - 1);
     }
 

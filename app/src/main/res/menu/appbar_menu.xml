@@ -33,10 +33,10 @@
                 android:icon="@drawable/ic_arrow_drop_down_black_24dp" />
         </menu>
     </item>
-    <item
-        android:id="@+id/menuSetting"
-        android:icon="@drawable/ic_menu_black_24dp"
-        android:title="Setting"
-        app:showAsAction="ifRoom">
-    </item>
+<!--    <item-->
+<!--        android:id="@+id/menuSetting"-->
+<!--        android:icon="@drawable/ic_menu_black_24dp"-->
+<!--        android:title="Setting"-->
+<!--        app:showAsAction="ifRoom">-->
+<!--    </item>-->
 </menu>

@@ -26,6 +26,17 @@ public class Repository {
     }
 
     public void editMovies(Movie movie) {
+        int index = 0;
+        for (int i = 0 ; i < movieList.size(); i++) {
+            if (movieList.get(i).getTitle().equals(movie.getTitle())) {
+                index = i;
+                break;
+            }
+        }
+        movieList.get(index).setTitle(movie.getTitle());
+        movieList.get(index).setGenre(movie.getGenre());
+        movieList.get(index).setDescription(movie.getDescription());
+        movieList.get(index).setRating(movie.getRating());
         dbRepository.update(movie);
         mainPresenter.notifyAboutEditMovie(movie);
     }
@@ -63,11 +74,11 @@ public class Repository {
         this.mainPresenter = mainPresenter;
     }
 
-    public boolean checkThatDoesNotExist(String title) {
+    public boolean checkThatDoesNotExist(String title, int id) {
         boolean isNotExist = true;
         List<Movie> tmpList = movieList;
         for (Movie movie : tmpList) {
-            if (movie.getTitle().equalsIgnoreCase(title)) {
+            if (movie.getTitle().equalsIgnoreCase(title) && !movie.getId().equals(String.valueOf(id))) {
                 isNotExist = false;
             }
         }
