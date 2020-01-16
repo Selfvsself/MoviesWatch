@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private CustomTextView inputSearch;
     private int maxHeightRootLayout;
     private boolean isFocusSearchInput = false;
+    float posY = 0;
 
     @Inject
     IMainPresenter presenter;
@@ -57,8 +58,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         layoutBottomSheet = findViewById(R.id.layoutBottomSheet);
         floatingActionButton = findViewById(R.id.floatingActionButton);
         inputSearch = findViewById(R.id.inputSearch);
-
-        maxHeightRootLayout = rootLayout.getHeight() - layoutBottomSheet.getHeight();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 if (viewHolder instanceof RecyclerAdapter.MyViewHolder) {
                     final int editIndex = viewHolder.getAdapterPosition();
                     Intent intent = new Intent(getApplicationContext(), EditMovieActivity.class);
-                    intent.putExtra("index", editIndex);
+                    intent.putExtra("id", presenter.getIdMovie(editIndex));
                     startActivity(intent);
                     presenter.refreshItem(editIndex);
                 }
@@ -145,8 +144,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_UP && mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            if (ev.getRawY() <= (rootLayout.getHeight())) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            posY = ev.getRawY();
+        }
+        if (ev.getAction() == MotionEvent.ACTION_UP) {
+            if (posY - ev.getRawY() > 270) floatingActionButton.hide();
+            else if (posY - ev.getRawY() < -130) floatingActionButton.show();
+            if (maxHeightRootLayout < rootLayout.getHeight()) {
+                maxHeightRootLayout = rootLayout.getHeight();
+            }
+            if (ev.getRawY() < rootLayout.getHeight() - layoutBottomSheet.getHeight() && maxHeightRootLayout == rootLayout.getHeight() && mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
                 mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         }

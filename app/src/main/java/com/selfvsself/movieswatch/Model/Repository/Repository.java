@@ -53,8 +53,13 @@ public class Repository {
         return movieList;
     }
 
-    public Movie getMovie(int index) {
-        return movieList.get(index);
+    public Movie getMovie(int id) {
+        for (Movie movie : movieList) {
+            if (movie.getId().equals(String.valueOf(id))) {
+                return movie;
+            }
+        }
+        return new Movie();
     }
 
     public String[] getAllGenres() {

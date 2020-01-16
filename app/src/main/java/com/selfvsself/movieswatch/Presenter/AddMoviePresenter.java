@@ -49,8 +49,8 @@ public class AddMoviePresenter implements IAddMoviePresenter{
     }
 
     @Override
-    public Movie getMovie(int index) {
-        return repository.getMovie(index);
+    public Movie getMovie(int id) {
+        return repository.getMovie(id);
     }
 
     @Override

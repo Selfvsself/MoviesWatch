@@ -29,7 +29,7 @@ public class EditMovieActivity extends AddMovieActivity{
 
         Intent intent = getIntent();
 
-        final Movie movie = addMoviePresenter.getMovie(intent.getIntExtra("index", 0));
+        final Movie movie = addMoviePresenter.getMovie(intent.getIntExtra("id", 0));
 
         inputTitle.setText(movie.getTitle());
         inputGenre.setText(movie.getGenre());

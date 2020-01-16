@@ -11,6 +11,8 @@ public interface IMainPresenter {
 
     public void addMovie(Movie movie);
 
+    public int getIdMovie(int index);
+
     public void refreshItem(int position);
 
     public void searchItem(String searchFilter);

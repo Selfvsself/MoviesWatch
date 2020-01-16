@@ -51,6 +51,11 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
     }
 
     @Override
+    public int getIdMovie(int index) {
+        return Integer.parseInt(movieList.get(index).getId());
+    }
+
+    @Override
     public void refreshItem(int position) {
         recyclerAdapter.notifyItemChanged(position);
     }
