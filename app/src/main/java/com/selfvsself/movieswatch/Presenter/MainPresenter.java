@@ -28,6 +28,11 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
     }
 
     private void getAllMovies() {
+        /*
+        ReplaySubject subject = ReplaySubject.create();
+        subject.onNext(*);
+        subject.subscribe(observer);
+         */
         movieList.clear();
         movieList.addAll(repository.getAllMovies());
     }
