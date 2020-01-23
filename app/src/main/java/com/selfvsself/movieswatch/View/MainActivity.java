@@ -199,4 +199,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        presenter.dispose();
+        super.onDestroy();
+    }
 }

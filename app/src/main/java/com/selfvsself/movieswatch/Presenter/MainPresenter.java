@@ -12,11 +12,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainPresenter implements IMainPresenter, IRepMainPresenter{
+import io.reactivex.disposables.Disposable;
+
+public class MainPresenter implements IMainPresenter, IRepMainPresenter {
 
     private Repository repository;
     private RecyclerAdapter recyclerAdapter;
     private List<Movie> movieList;
+    private Disposable disposableRequestDataBase;
 
     @Inject
     public MainPresenter(Repository repository) {
@@ -24,17 +27,18 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
         movieList = new ArrayList<>();
         getAllMovies();
         recyclerAdapter = new RecyclerAdapter(movieList);
-        repository.setMainPresenter(this);
     }
 
     private void getAllMovies() {
-        /*
-        ReplaySubject subject = ReplaySubject.create();
-        subject.onNext(*);
-        subject.subscribe(observer);
-         */
-        movieList.clear();
-        movieList.addAll(repository.getAllMovies());
+        disposableRequestDataBase = repository.getMovieListSubject().subscribe(movie -> {
+            for (Movie m : movieList) {
+                if (m.getId().equals(movie.getId())) {
+                    movieList.remove(m);
+                    break;
+                }
+            }
+            movieList.add(movie);
+        });
     }
 
     @Override
@@ -43,8 +47,15 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
     }
 
     @Override
+    public void dispose() {
+        disposableRequestDataBase.dispose();
+        repository.dispose();
+    }
+
+    @Override
     public Movie deleteMovie(int index) {
-        Movie deletedMovie = repository.deleteMovie(index);
+        Movie deletedMovie = movieList.get(index);
+        repository.deleteMovie(deletedMovie);
         movieList.remove(index);
         recyclerAdapter.notifyItemRemoved(index);
         return deletedMovie;
@@ -154,7 +165,7 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter{
     @Override
     public void notifyAboutEditMovie(Movie movie) {
         int index = 0;
-        for (int i = 0 ; i < movieList.size(); i++) {
+        for (int i = 0; i < movieList.size(); i++) {
             if (movieList.get(i).getTitle().equals(movie.getTitle())) {
                 index = i;
                 break;

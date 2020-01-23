@@ -6,6 +6,7 @@ import com.selfvsself.movieswatch.Model.RecyclerAdapter;
 public interface IMainPresenter {
 
     public RecyclerAdapter getRecyclerAdapter();
+    public void dispose();
 
     public Movie deleteMovie(int index);
 

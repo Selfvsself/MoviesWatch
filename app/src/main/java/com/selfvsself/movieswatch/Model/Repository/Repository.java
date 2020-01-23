@@ -2,71 +2,116 @@ package com.selfvsself.movieswatch.Model.Repository;
 
 import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBRepository;
-import com.selfvsself.movieswatch.Presenter.IRepMainPresenter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import dagger.Module;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableCompletableObserver;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.ReplaySubject;
 
 @Module
 public class Repository {
 
     private DBRepository dbRepository;
-    private IRepMainPresenter mainPresenter;
-    private List<Movie> movieList = new ArrayList<>();
+    private ReplaySubject<Movie> movieListSubject;
+    private Disposable addDataBaseDisposable;
+
     public Repository(DBRepository dbRepository) {
         this.dbRepository = dbRepository;
+        movieListSubject = ReplaySubject.create();
+        addDataBaseDisposable = Observable.fromCallable(dbRepository::readAll)
+                .subscribeOn(Schedulers.single())
+                .concatMap(Observable::fromIterable)
+                .subscribe(str -> {
+                    movieListSubject.onNext(str);
+                });
+    }
+
+    public void dispose() {
+        addDataBaseDisposable.dispose();
+    }
+
+    public ReplaySubject<Movie> getMovieListSubject() {
+        return movieListSubject;
     }
 
     public void addMovies(Movie movie) {
-        dbRepository.addMovie(movie);
-        movieList.add(movie);
-        mainPresenter.notifyAboutAddingMovie(movie);
+        Completable c = Completable.fromRunnable(() -> {
+            dbRepository.addMovie(movie);
+        });
+        addDataBaseDisposable = c.subscribeWith(new DisposableCompletableObserver() {
+            @Override
+            public void onComplete() {
+                movieListSubject.onNext(movie);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void editMovies(Movie movie) {
-        int index = 0;
-        for (int i = 0 ; i < movieList.size(); i++) {
-            if (movieList.get(i).getTitle().equals(movie.getTitle())) {
-                index = i;
-                break;
+        Completable c = Completable.fromRunnable(() -> {
+            dbRepository.update(movie);
+        });
+        addDataBaseDisposable = c.subscribeWith(new DisposableCompletableObserver() {
+            @Override
+            public void onComplete() {
+                movieListSubject.onNext(movie);
             }
-        }
-        movieList.get(index).setTitle(movie.getTitle());
-        movieList.get(index).setGenre(movie.getGenre());
-        movieList.get(index).setDescription(movie.getDescription());
-        movieList.get(index).setRating(movie.getRating());
-        dbRepository.update(movie);
-        mainPresenter.notifyAboutEditMovie(movie);
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    public Movie deleteMovie(int index) {
-        Movie deleteMovie = movieList.get(index);
-        movieList.remove(index);
-        dbRepository.deleteMovie(deleteMovie);
-        return deleteMovie;
-    }
-
-    public List<Movie> getAllMovies() {
-        if (movieList.size() == 0) movieList = dbRepository.readAll();
-        return movieList;
+    public void deleteMovie(Movie movie) {
+        dbRepository.deleteMovie(movie);
     }
 
     public Movie getMovie(int id) {
-        for (Movie movie : movieList) {
-            if (movie.getId().equals(String.valueOf(id))) {
-                return movie;
-            }
-        }
-        return new Movie();
+        final Movie movie = new Movie();
+        movieListSubject
+                .filter(m -> m.getId().equalsIgnoreCase(String.valueOf(id)))
+                .subscribe(new DisposableObserver<Movie>() {
+                    @Override
+                    public void onNext(Movie m) {
+                        movie.setId(Integer.parseInt(m.getId()));
+                        movie.setTitle(m.getTitle());
+                        movie.setDescription(m.getDescription());
+                        movie.setGenre(m.getGenre());
+                        movie.setRating(m.getRating());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        return movie;
     }
 
     public String[] getAllGenres() {
-        String[] genres = { "Action", "Anime", "Adventure", "Animation", "Biography",
+        String[] genres = {"Action", "Anime", "Adventure", "Animation", "Biography",
                 "Comedy", "Documentary", "Drama", "Family", "Fantasy", "History", "Horror",
                 "Music", "Musical", "Mystery", "Romance", "Sci-Fi", "Short Film",
-                "Sport", "Superhero", "Thriller", "War", "Western" , "Аниме" , "Биография",
+                "Sport", "Superhero", "Thriller", "War", "Western", "Аниме", "Биография",
                 "Биография", "Боевик", "Вестерн", "Военный", "Детектив",
                 "Детский", "Для взрослых", "Документальный", "Драма", "Игра",
                 "История", "Комедия", "Концерт", "Короткометражка", "Криминал", "Мелодрама",
@@ -75,18 +120,13 @@ public class Repository {
         return genres;
     }
 
-    public void setMainPresenter(IRepMainPresenter mainPresenter) {
-        this.mainPresenter = mainPresenter;
-    }
-
     public boolean checkThatDoesNotExist(String title, int id) {
-        boolean isNotExist = true;
-        List<Movie> tmpList = movieList;
-        for (Movie movie : tmpList) {
-            if (movie.getTitle().equalsIgnoreCase(title) && !movie.getId().equals(String.valueOf(id))) {
-                isNotExist = false;
-            }
-        }
-        return isNotExist;
+        AtomicBoolean isNotExist = new AtomicBoolean(true);
+        movieListSubject
+                .filter(m -> m.getTitle().equalsIgnoreCase(title))
+                .filter(m -> !m.getId().equalsIgnoreCase(String.valueOf(id)))
+                .count()
+                .subscribe(s -> isNotExist.set(false), e-> isNotExist.set(true));
+        return isNotExist.get();
     }
 }

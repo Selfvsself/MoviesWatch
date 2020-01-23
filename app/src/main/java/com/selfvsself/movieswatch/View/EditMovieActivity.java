@@ -34,7 +34,7 @@ public class EditMovieActivity extends AddMovieActivity{
         inputTitle.setText(movie.getTitle());
         inputGenre.setText(movie.getGenre());
         inputDescription.setText(movie.getDescription());
-        seekBar.setProgress((int) (Float.valueOf(movie.getRating()) * 2 - 5));
+        seekBar.setProgress(Integer.parseInt(movie.getRating()));
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
