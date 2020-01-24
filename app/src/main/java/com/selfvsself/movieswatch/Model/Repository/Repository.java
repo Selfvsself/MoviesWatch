@@ -1,32 +1,34 @@
 package com.selfvsself.movieswatch.Model.Repository;
 
+import android.content.Context;
+
+import androidx.room.Room;
+
 import com.selfvsself.movieswatch.Model.Movie;
-import com.selfvsself.movieswatch.Model.Repository.DBHelper.DBRepository;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dagger.Module;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableObserver;
-import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.ReplaySubject;
 
 @Module
 public class Repository {
 
-    private DBRepository dbRepository;
     private ReplaySubject<Movie> movieListSubject;
     private Disposable addDataBaseDisposable;
+    private MovieDAO movieDAO;
 
-    public Repository(DBRepository dbRepository) {
-        this.dbRepository = dbRepository;
+    public Repository(Context context) {
+        DataBaseMovieEntity dataBase = Room.databaseBuilder(context, DataBaseMovieEntity.class, "rmovie_database").build();
+        movieDAO = dataBase.movieDAO();
         movieListSubject = ReplaySubject.create();
-        addDataBaseDisposable = Observable.fromCallable(dbRepository::readAll)
+        addDataBaseDisposable = Observable.fromCallable(movieDAO::getAll)
                 .subscribeOn(Schedulers.single())
                 .concatMap(Observable::fromIterable)
                 .subscribe(str -> {
@@ -44,9 +46,9 @@ public class Repository {
 
     public void addMovies(Movie movie) {
         Completable c = Completable.fromRunnable(() -> {
-            dbRepository.addMovie(movie);
+            movieDAO.insert(movie);
         });
-        addDataBaseDisposable = c.subscribeWith(new DisposableCompletableObserver() {
+        addDataBaseDisposable = c.subscribeOn(Schedulers.single()).subscribeWith(new DisposableCompletableObserver() {
             @Override
             public void onComplete() {
                 movieListSubject.onNext(movie);
@@ -61,7 +63,7 @@ public class Repository {
 
     public void editMovies(Movie movie) {
         Completable c = Completable.fromRunnable(() -> {
-            dbRepository.update(movie);
+//            dbRepository.update(movie);
         });
         addDataBaseDisposable = c.subscribeWith(new DisposableCompletableObserver() {
             @Override
@@ -77,17 +79,17 @@ public class Repository {
     }
 
     public void deleteMovie(Movie movie) {
-        dbRepository.deleteMovie(movie);
+        movieDAO.delete(movie);
     }
 
     public Movie getMovie(int id) {
         final Movie movie = new Movie();
         movieListSubject
-                .filter(m -> m.getId().equalsIgnoreCase(String.valueOf(id)))
+                .filter(m -> m.getId() == id)
                 .subscribe(new DisposableObserver<Movie>() {
                     @Override
                     public void onNext(Movie m) {
-                        movie.setId(Integer.parseInt(m.getId()));
+                        movie.setId(m.getId());
                         movie.setTitle(m.getTitle());
                         movie.setDescription(m.getDescription());
                         movie.setGenre(m.getGenre());
@@ -124,7 +126,7 @@ public class Repository {
         AtomicBoolean isNotExist = new AtomicBoolean(true);
         movieListSubject
                 .filter(m -> m.getTitle().equalsIgnoreCase(title))
-                .filter(m -> !m.getId().equalsIgnoreCase(String.valueOf(id)))
+                .filter(m -> m.getId() != id)
                 .count()
                 .subscribe(s -> isNotExist.set(false), e-> isNotExist.set(true));
         return isNotExist.get();

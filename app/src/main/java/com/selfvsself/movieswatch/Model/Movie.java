@@ -1,7 +1,12 @@
 package com.selfvsself.movieswatch.Model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Movie {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;
     private String genre;
@@ -45,8 +50,8 @@ public class Movie {
         this.rating = rating;
     }
 
-    public String getId() {
-        return String.valueOf(id);
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {

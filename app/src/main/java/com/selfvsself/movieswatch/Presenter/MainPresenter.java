@@ -32,7 +32,7 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter {
     private void getAllMovies() {
         disposableRequestDataBase = repository.getMovieListSubject().subscribe(movie -> {
             for (Movie m : movieList) {
-                if (m.getId().equals(movie.getId())) {
+                if (m.getId() == movie.getId()) {
                     movieList.remove(m);
                     break;
                 }
@@ -68,7 +68,7 @@ public class MainPresenter implements IMainPresenter, IRepMainPresenter {
 
     @Override
     public int getIdMovie(int index) {
-        return Integer.parseInt(movieList.get(index).getId());
+        return movieList.get(index).getId();
     }
 
     @Override

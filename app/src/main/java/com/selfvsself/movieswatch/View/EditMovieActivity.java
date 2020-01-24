@@ -39,7 +39,7 @@ public class EditMovieActivity extends AddMovieActivity{
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isSaved = addMoviePresenter.editMovie(Integer.parseInt(movie.getId()));
+                boolean isSaved = addMoviePresenter.editMovie(movie.getId());
                 if (isSaved) {
                     finish();
                 }
