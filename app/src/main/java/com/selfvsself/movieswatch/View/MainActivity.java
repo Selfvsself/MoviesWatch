@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private CoordinatorLayout rootLayout;
     private static final String WEB_LINK = "https://github.com/Selfvsself/MoviesWatch";
-    private static final String EMAIL_ADDRESS = "killerman323@gmail.com";
 
     @Inject
     IMainPresenter presenter;
