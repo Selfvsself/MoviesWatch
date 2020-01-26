@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="standard_genre">
+        <item>Action</item>
+        <item>Anime</item>
+        <item>Adventure</item>
+        <item>Animation</item>
+        <item>Biography</item>
+        <item>Comedy</item>
+        <item>Documentary</item>
+        <item>Drama</item>
+        <item>Family</item>
+        <item>Fantasy</item>
+        <item>History</item>
+        <item>Horror</item>
+        <item>Music</item>
+        <item>Musical</item>
+        <item>Mystery</item>
+        <item>Romance</item>
+        <item>Sci-Fi</item>
+        <item>Short Film</item>
+        <item>Superhero</item>
+        <item>Thriller</item>
+        <item>War</item>
+        <item>Western</item>
+        <item>Аниме</item>
+        <item>Биография</item>
+        <item>Боевик</item>
+        <item>Вестерн</item>
+        <item>Военный</item>
+        <item>Детектив</item>
+        <item>Детский</item>
+        <item>Для взрослых</item>
+        <item>Документальный</item>
+        <item>Драма</item>
+        <item>Игра</item>
+        <item>История</item>
+        <item>Комедия</item>
+        <item>Концерт</item>
+        <item>Короткометражка</item>
+        <item>Криминал</item>
+        <item>Мелодрама</item>
+        <item>Музыка</item>
+        <item>Мультфильм</item>
+        <item>Мюзикл</item>
+        <item>Приключения</item>
+        <item>Семейный</item>
+        <item>Сериал</item>
+        <item>Спорт</item>
+        <item>Триллер</item>
+        <item>Ужасы</item>
+        <item>Фантастика</item>
+        <item>Фильм нуар</item>
+        <item>Фэнтези</item>
+    </string-array>
+</resources>

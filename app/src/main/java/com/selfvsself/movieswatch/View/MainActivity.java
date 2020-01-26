@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout rootLayout;
     private static final String WEB_LINK = "https://github.com/Selfvsself/MoviesWatch";
     private static final String EMAIL_ADDRESS = "killerman323@gmail.com";
-    private static final String EMAIL_SUBJECT = "MoviesWatch";
 
     @Inject
     IMainPresenter presenter;
