@@ -3,15 +3,17 @@ package com.selfvsself.movieswatch.Model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class Movie {
+import java.util.Comparator;
 
-    @PrimaryKey(autoGenerate = true)
+@Entity
+public class Movie implements Comparator<Movie> {
+
+    @PrimaryKey()
     private int id;
     private String title;
     private String genre;
     private String description;
-    private String rating;
+    private int rating;
 
     public String getTitle() {
         return title;
@@ -37,16 +39,20 @@ public class Movie {
         this.description = description;
     }
 
-    public String getRating() {
+    public int getRating() {
         return rating;
     }
 
     public String getFormattedRating() {
-        float formattedRating= 2.5f + Float.parseFloat(rating) / 2;
+        return formatRating(getRating());
+    }
+
+    public static String formatRating(int rating) {
+        float formattedRating = 2.5f + (float) rating / 2;
         return String.valueOf(formattedRating);
     }
 
-    public void setRating(String rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
@@ -58,17 +64,20 @@ public class Movie {
         this.id = id;
     }
 
-    public boolean isFiltered(String string) {
-        return (title.toLowerCase().contains(string) ||
-                genre.toLowerCase().contains(string) ||
-                description.toLowerCase().contains(string));
+    public static int getUniqueID(Movie movie) {
+        return movie.getTitle().hashCode();
     }
 
-    public int compareByNameUp(Movie movie) {
-        return title.compareTo(movie.getTitle());
+    public int compareTo(Movie movie) {
+        return compare(this, movie);
     }
 
-    public int compareByNameDown(Movie movie) {
-        return movie.getTitle().compareTo(title);
+    @Override
+    public int compare(Movie movie1, Movie movie2) {
+        int result = movie2.getRating() - movie1.getRating();
+        if (result == 0) {
+            result = movie1.getTitle().compareToIgnoreCase(movie2.getTitle());
+        }
+        return result;
     }
 }

@@ -3,45 +3,44 @@ package com.selfvsself.movieswatch.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-import com.selfvsself.movieswatch.AndroidApplication;
 import com.selfvsself.movieswatch.Model.Movie;
-import com.selfvsself.movieswatch.Presenter.IAddMoviePresenter;
 import com.selfvsself.movieswatch.R;
 
-import javax.inject.Inject;
+public class EditMovieActivity extends AddMovieActivity {
 
-public class EditMovieActivity extends AddMovieActivity{
+    Movie oldMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addMoviePresenter.setView(this);
 
         Intent intent = getIntent();
 
-        final Movie movie = addMoviePresenter.getMovie(intent.getIntExtra("id", 0));
+        oldMovie = addMoviePresenter.getMovieByID(intent.getIntExtra("id", 0));
 
-        inputTitle.setText(movie.getTitle());
-        inputGenre.setText(movie.getGenre());
-        inputDescription.setText(movie.getDescription());
-        seekBar.setProgress(Integer.parseInt(movie.getRating()));
+        TextView title = findViewById(R.id.titleOnAddActivity);
+        title.setText(R.string.title_edit_movie);
+        inputTitle.setText(oldMovie.getTitle());
+        inputGenre.setText(oldMovie.getGenre());
+        inputDescription.setText(oldMovie.getDescription());
+        seekBar.setProgress(oldMovie.getRating());
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isSaved = addMoviePresenter.editMovie(movie.getId());
+                Movie editableMovie = new Movie();
+                editableMovie.setId(oldMovie.getId());
+                editableMovie.setTitle(inputTitle.getText().toString());
+                editableMovie.setGenre(inputGenre.getText().toString());
+                editableMovie.setDescription(inputDescription.getText().toString());
+                editableMovie.setRating(seekBar.getProgress());
+                boolean isSaved = addMoviePresenter.editMovie(editableMovie);
                 if (isSaved) {
                     finish();
+                } else {
+                    inputTitleLayout.setError("Incorrect movie title");
                 }
             }
         });

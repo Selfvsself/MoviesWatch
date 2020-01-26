@@ -1,20 +1,18 @@
 package com.selfvsself.movieswatch.Presenter;
 
 import com.selfvsself.movieswatch.Model.Movie;
-import com.selfvsself.movieswatch.View.AddMovieActivityView;
-import com.selfvsself.movieswatch.View.EditMovieActivity;
+
+import java.util.List;
 
 public interface IAddMoviePresenter {
 
-    public String[] getAllGenres();
+    List<String> getAllGenres();
 
-    public void setProgressSeekBar(int progress);
+    boolean addMovie(Movie movie);
 
-    public void setView(AddMovieActivityView view);
+    boolean editMovie(Movie movie);
 
-    public boolean saveMovie();
+    String getHintByRating(int rating);
 
-    public Movie getMovie(int index);
-
-    public boolean editMovie(int id);
+    Movie getMovieByID(int id);
 }

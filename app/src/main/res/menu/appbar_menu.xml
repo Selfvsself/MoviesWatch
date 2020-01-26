@@ -1,42 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menuSearch"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:title="Search"
-        app:showAsAction="ifRoom">
-    </item>
-    <item
-        android:id="@+id/menuSort"
-        android:icon="@drawable/ic_sort_black_24dp"
-        android:title="Sort"
-        app:showAsAction="ifRoom">
-        <menu>
-            <item android:id="@+id/menuByName"
-                android:title="ByName"
-                android:icon="@drawable/ic_arrow_drop_up_black_24dp" />
-            <item android:id="@+id/menuByName2"
-                android:title="ByName"
-                android:icon="@drawable/ic_arrow_drop_down_black_24dp" /> />
-            <item android:id="@+id/menuByGenre"
-                android:title="ByGenre"
-                android:icon="@drawable/ic_arrow_drop_up_black_24dp" /> />
-            <item android:id="@+id/menuByGenre2"
-                android:title="ByGenre"
-                android:icon="@drawable/ic_arrow_drop_down_black_24dp" />
-            <item android:id="@+id/menuByRating"
-                android:title="ByRating"
-                android:icon="@drawable/ic_arrow_drop_up_black_24dp" /> />
-            <item android:id="@+id/menuByRating2"
-                android:title="ByRating"
-                android:icon="@drawable/ic_arrow_drop_down_black_24dp" />
-        </menu>
-    </item>
-<!--    <item-->
-<!--        android:id="@+id/menuSetting"-->
-<!--        android:icon="@drawable/ic_menu_black_24dp"-->
-<!--        android:title="Setting"-->
-<!--        app:showAsAction="ifRoom">-->
-<!--    </item>-->
+        android:id="@+id/menuSetting"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:title="@string/title_activity_settings"
+        app:showAsAction="ifRoom"/>
 </menu>

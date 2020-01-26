@@ -1,11 +1,9 @@
 package com.selfvsself.movieswatch.Model;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,6 +21,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public RecyclerAdapter(List<Movie> movieList) {
         this.movieList = movieList;
     }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -36,6 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         holder.textGenre.setText(movieList.get(position).getGenre());
         holder.textRating.setText(movieList.get(position).getFormattedRating());
         holder.textDescription.setText(movieList.get(position).getDescription());
+//        holder.debugIdMovieText.setText(String.valueOf(movieList.get(position).getId()));
     }
 
     @Override
@@ -46,6 +46,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         final TextView textTitle, textGenre, textDescription, textRating;
+        //        final TextView debugIdMovieText;
         public RelativeLayout viewForeground, viewBacground;
         public TextView editText, deleteText;
         public ImageView editIcon, deleteIcon;
@@ -62,6 +63,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             deleteIcon = itemView.findViewById(R.id.deleteIcon);
             editText = itemView.findViewById(R.id.editText);
             deleteText = itemView.findViewById(R.id.deleteText);
+//            debugIdMovieText = itemView.findViewById(R.id.idMovieDebugText);
         }
     }
 }

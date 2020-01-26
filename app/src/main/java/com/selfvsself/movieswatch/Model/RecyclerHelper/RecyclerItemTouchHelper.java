@@ -8,8 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.RecyclerAdapter;
 import com.selfvsself.movieswatch.R;
 

@@ -5,23 +5,15 @@ import com.selfvsself.movieswatch.Model.RecyclerAdapter;
 
 public interface IMainPresenter {
 
-    public RecyclerAdapter getRecyclerAdapter();
-    public void dispose();
+    RecyclerAdapter getRecyclerAdapter();
 
-    public Movie deleteMovie(int index);
+    void dispose();
 
-    public void addMovie(Movie movie);
+    Movie deleteMovie(int index);
 
-    public int getIdMovie(int index);
+    void restoringMovie(Movie movie);
 
-    public void refreshItem(int position);
+    int getMovieID(int index);
 
-    public void searchItem(String searchFilter);
-
-    public void sortByName();
-    public void sortByNameDown();
-    public void sortByGenre();
-    public void sortGenreDown();
-    public void sortByRating();
-    public void sortByRatingDown();
+    void refreshViewOnItem(int index);
 }

@@ -15,6 +15,8 @@ import dagger.Component;
 @Component(modules = {AppModule.class, ContextModule.class})
 public interface AppComponent {
     Context context(Context context);
+
     void inject(MainActivity mainActivity);
+
     void inject(AddMovieActivity addMovieActivity);
 }

@@ -8,56 +8,56 @@
         android:id="@+id/background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground3"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorBackground3">
 
         <ImageView
             android:id="@+id/deleteIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_delete_black_24dp"
             android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"/>
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_delete_black_24dp" />
 
         <TextView
+            android:id="@+id/deleteText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/deleteText"
+            android:layout_alignStart="@id/deleteIcon"
             android:layout_centerVertical="true"
-            android:text="Delete"
+            android:layout_marginStart="40dp"
+            android:text="@string/item_on_list_delete"
             android:textColor="@color/colorMainText"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_alignStart="@id/deleteIcon"
-            android:layout_marginStart="40dp"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/editIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit_black_24dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_edit_black_24dp" />
 
         <TextView
+            android:id="@+id/editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:layout_alignEnd="@id/editIcon"
             android:layout_centerVertical="true"
-            android:text="Edit"
+            android:layout_marginEnd="40dp"
+            android:text="@string/item_on_list_edit"
             android:textColor="@color/colorMainText"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_alignEnd="@id/editIcon"
-            android:layout_marginEnd="40dp"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/itemCardView"
+        style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/MyCardViewStyle">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                     android:id="@+id/item_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Movie 1"
+                    android:text="@string/_test"
                     android:textColor="@color/colorMainText"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Genre"
+                    android:text="@string/_test"
                     android:textColor="@color/colorSecondText"
                     android:textSize="16sp" />
 
@@ -93,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
-                    android:text="Description"
+                    android:text="@string/_test"
                     android:textColor="@color/colorSecondText"
                     android:textSize="14sp" />
 
@@ -107,11 +107,12 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/idMovieDebugText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="Rating"
+                    android:text="@string/item_on_list_rating"
                     android:textColor="@color/colorSecondText"
                     android:textSize="16sp" />
 
@@ -120,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="5.0"
+                    android:text="@string/_test"
                     android:textColor="@color/colorMainText"
                     android:textSize="40sp"
                     android:textStyle="bold" />

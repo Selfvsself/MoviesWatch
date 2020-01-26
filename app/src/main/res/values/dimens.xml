@@ -3,4 +3,10 @@
     <dimen name="recycler_card_margin">8dp</dimen>
     <dimen name="recycler_card_padding">16dp</dimen>
     <dimen name="recycler_card_padding_bottom">8dp</dimen>
+
+    <dimen name="title_add_activity_vertical">4dp</dimen>
+    <dimen name="title_add_activity_horizontal">8dp</dimen>
+
+    <dimen name="standard_padding">8dp</dimen>
+    <dimen name="big_padding">16dp</dimen>
 </resources>

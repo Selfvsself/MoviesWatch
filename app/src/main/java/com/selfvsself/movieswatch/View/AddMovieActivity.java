@@ -1,8 +1,6 @@
 package com.selfvsself.movieswatch.View;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -15,12 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.selfvsself.movieswatch.AndroidApplication;
+import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Presenter.IAddMoviePresenter;
 import com.selfvsself.movieswatch.R;
 
 import javax.inject.Inject;
 
-public class AddMovieActivity extends AppCompatActivity implements AddMovieActivityView{
+public class AddMovieActivity extends AppCompatActivity {
 
     public static final String KEY_TITLE = "title";
     public static final String KEY_GENRE = "genre";
@@ -44,7 +43,6 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_movie);
         ((AndroidApplication) getApplication()).getAppComponent().inject(this);
-        addMoviePresenter.setView(this);
 
         inputTitle = findViewById(R.id.inputTitle);
         inputTitleLayout = findViewById(R.id.textTitleInputLayout);
@@ -55,16 +53,16 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
 
         seekBar = findViewById(R.id.seekBar);
         textViewAssessment = findViewById(R.id.textViewAssessment);
+        textViewAssessment.setText(addMoviePresenter.getHintByRating(seekBar.getProgress()));
         textRating = findViewById(R.id.textRating);
+        textRating.setText(Movie.formatRating(seekBar.getProgress()));
         btnSave = findViewById(R.id.buttonSave);
         btnCancel = findViewById(R.id.buttonCancel);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                addMoviePresenter.setProgressSeekBar(progress);
-                String str = String.valueOf(progress);
-                float formattedRating= 2.5f + Float.parseFloat(str) / 2;
-                textRating.setText(String.valueOf(formattedRating));
+                textViewAssessment.setText(addMoviePresenter.getHintByRating(progress));
+                textRating.setText(Movie.formatRating(progress));
             }
 
             @Override
@@ -87,9 +85,16 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isSaved = addMoviePresenter.saveMovie();
-                if (isSaved) {
+                Movie addMovie = new Movie();
+                addMovie.setTitle(inputTitle.getText().toString());
+                addMovie.setGenre(inputGenre.getText().toString());
+                addMovie.setDescription(inputDescription.getText().toString());
+                addMovie.setRating(seekBar.getProgress());
+                boolean isAdding = addMoviePresenter.addMovie(addMovie);
+                if (isAdding) {
                     finish();
+                } else {
+                    inputTitleLayout.setError("Incorrect movie title");
                 }
             }
         });
@@ -99,35 +104,5 @@ public class AddMovieActivity extends AppCompatActivity implements AddMovieActiv
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.activity_down_up_close_enter, R.anim.activity_down_up_close_exit);
-    }
-
-    @Override
-    public void setAssessmentText(String message) {
-        textViewAssessment.setText(message);
-    }
-
-    @Override
-    public String getMovieTitle() {
-        return inputTitle.getText().toString();
-    }
-
-    @Override
-    public String getMovieGenre() {
-        return inputGenre.getText().toString();
-    }
-
-    @Override
-    public String getMovieDescription() {
-        return inputDescription.getText().toString();
-    }
-
-    @Override
-    public String getMovieRating() {
-        return String.valueOf(seekBar.getProgress());
-    }
-
-    @Override
-    public void setErrorMsgInTitle(String errorMsg) {
-        inputTitleLayout.setError(errorMsg);
     }
 }

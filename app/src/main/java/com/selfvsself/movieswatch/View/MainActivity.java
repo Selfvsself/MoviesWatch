@@ -1,27 +1,23 @@
 package com.selfvsself.movieswatch.View;
 
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.selfvsself.movieswatch.AndroidApplication;
 import com.selfvsself.movieswatch.Model.Movie;
 import com.selfvsself.movieswatch.Model.RecyclerAdapter;
@@ -32,16 +28,13 @@ import com.selfvsself.movieswatch.R;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView {
+public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton floatingActionButton;
     private CoordinatorLayout rootLayout;
-    private BottomSheetBehavior mbottomSheetBehavior;
-    private LinearLayout layoutBottomSheet;
-    private CustomTextView inputSearch;
-    private int maxHeightRootLayout;
-    private boolean isFocusSearchInput = false;
-    float posY = 0;
+    private static final String WEB_LINK = "https://github.com/Selfvsself/MoviesWatch";
+    private static final String EMAIL_ADDRESS = "killerman323@gmail.com";
+    private static final String EMAIL_SUBJECT = "MoviesWatch";
 
     @Inject
     IMainPresenter presenter;
@@ -51,13 +44,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ((AndroidApplication) getApplication()).getAppComponent().inject(this);
-        View bottomSheet = findViewById(R.id.bottom_sheet);
-        mbottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
         rootLayout = findViewById(R.id.root_layout);
-        layoutBottomSheet = findViewById(R.id.layoutBottomSheet);
         floatingActionButton = findViewById(R.id.floatingActionButton);
-        inputSearch = findViewById(R.id.inputSearch);
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         });
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.hasFixedSize();
         RecyclerAdapter adapter = presenter.getRecyclerAdapter();
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
@@ -79,9 +69,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 if (viewHolder instanceof RecyclerAdapter.MyViewHolder) {
                     final int editIndex = viewHolder.getAdapterPosition();
                     Intent intent = new Intent(getApplicationContext(), EditMovieActivity.class);
-                    intent.putExtra("id", presenter.getIdMovie(editIndex));
+                    intent.putExtra("id", presenter.getMovieID(editIndex));
                     startActivity(intent);
-                    presenter.refreshItem(editIndex);
+                    presenter.refreshViewOnItem(editIndex);
                 }
             }
         });
@@ -90,14 +80,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
                 if (viewHolder instanceof RecyclerAdapter.MyViewHolder) {
                     final int deletedIndex = viewHolder.getAdapterPosition();
-
                     final Movie deletedMovie = presenter.deleteMovie(deletedIndex);
 
-                    Snackbar snackbar = Snackbar.make(rootLayout, deletedMovie.getTitle() + " removed", Snackbar.LENGTH_SHORT);
+                    Snackbar snackbar = Snackbar.make(rootLayout, deletedMovie.getTitle() + " removed", Snackbar.LENGTH_LONG);
                     snackbar.setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            presenter.addMovie(deletedMovie);
+                            presenter.restoringMovie(deletedMovie);
                         }
                     });
                     snackbar.show();
@@ -107,57 +96,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         });
         new ItemTouchHelper(itemTouchHelperCallbackRight).attachToRecyclerView(recyclerView);
         new ItemTouchHelper(itemTouchHelperCallbackLeft).attachToRecyclerView(recyclerView);
-
-        presenter.sortByName();
-
-        inputSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                presenter.searchItem(s.toString());
-            }
-        });
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)  {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            if (mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            } else {
-                finish();
-            }
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            posY = ev.getRawY();
-        }
-        if (ev.getAction() == MotionEvent.ACTION_UP) {
-            if (posY - ev.getRawY() > 270) floatingActionButton.hide();
-            else if (posY - ev.getRawY() < -130) floatingActionButton.show();
-            if (maxHeightRootLayout < rootLayout.getHeight()) {
-                maxHeightRootLayout = rootLayout.getHeight();
-            }
-            if (ev.getRawY() < rootLayout.getHeight() - layoutBottomSheet.getHeight() && maxHeightRootLayout == rootLayout.getHeight() && mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            }
-        }
-        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -168,33 +106,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Операции для выбранного пункта меню
         switch (item.getItemId()) {
-            case R.id.menuSearch:
-                if (mbottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                    mbottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }
+            case R.id.menuSetting:
+                View dialog = LayoutInflater.from(this).inflate(R.layout.dialog_about, null);
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                TextView btnOk = dialog.findViewById(R.id.btn_dialog_ok);
+                btnOk.setOnClickListener(v -> alertDialog.cancel());
+                TextView textLink = dialog.findViewById(R.id.about_text_link);
+                textLink.setOnClickListener(v -> {
+                    Intent openLinkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WEB_LINK));
+                    startActivity(openLinkIntent);
+                });
+                alertDialog.setView(dialog);
+                alertDialog.show();
                 return true;
-            case R.id.menuByName:
-                presenter.sortByName();
-                return true;
-            case R.id.menuByName2:
-                presenter.sortByNameDown();
-                return true;
-            case R.id.menuByGenre:
-                presenter.sortByGenre();
-                return true;
-            case R.id.menuByGenre2:
-                presenter.sortGenreDown();
-                return true;
-            case R.id.menuByRating:
-                presenter.sortByRating();
-                return true;
-            case R.id.menuByRating2:
-                presenter.sortByRatingDown();
-                return true;
-//            case R.id.menuSetting:
-//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

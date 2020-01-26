@@ -2,7 +2,9 @@ package com.selfvsself.movieswatch.DI;
 
 import android.content.Context;
 
-import com.selfvsself.movieswatch.Model.Repository.Repository;
+import com.selfvsself.movieswatch.Model.Repository.DB.DBRepository;
+import com.selfvsself.movieswatch.Model.Repository.MainRepository;
+import com.selfvsself.movieswatch.Model.Repository.Resources.ResourcesHelper;
 import com.selfvsself.movieswatch.Presenter.AddMoviePresenter;
 import com.selfvsself.movieswatch.Presenter.IAddMoviePresenter;
 import com.selfvsself.movieswatch.Presenter.IMainPresenter;
@@ -18,19 +20,31 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public Repository getRepository(Context context) {
-        return new Repository(context);
+    public ResourcesHelper getResourcesHelper(Context context) {
+        return new ResourcesHelper(context);
     }
 
     @Singleton
     @Provides
-    public IMainPresenter getMainPresenter(Repository repository) {
+    public DBRepository getDBRepository(Context context) {
+        return new DBRepository(context);
+    }
+
+    @Singleton
+    @Provides
+    public MainRepository getRepository(DBRepository dbRepository, ResourcesHelper resourcesHelper) {
+        return new MainRepository(dbRepository, resourcesHelper);
+    }
+
+    @Singleton
+    @Provides
+    public IMainPresenter getMainPresenter(MainRepository repository) {
         return new MainPresenter(repository);
     }
 
     @Singleton
     @Provides
-    public IAddMoviePresenter getAddMoviePresenter(Repository repository) {
+    public IAddMoviePresenter getAddMoviePresenter(MainRepository repository) {
         return new AddMoviePresenter(repository);
     }
 }
