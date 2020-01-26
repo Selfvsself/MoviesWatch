@@ -27,11 +27,13 @@ public class AddMoviePresenter implements IAddMoviePresenter {
 
     @Override
     public boolean addMovie(Movie movie) {
+        if (movie.getTitle().length() == 0) return false;
         return repository.addMovie(movie);
     }
 
     @Override
     public boolean editMovie(Movie movie) {
+        if (movie.getTitle().length() == 0) return false;
         return repository.editMovie(movie);
     }
 
