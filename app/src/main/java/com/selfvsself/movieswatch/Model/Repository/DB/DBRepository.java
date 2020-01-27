@@ -45,13 +45,15 @@ public class DBRepository implements IDBRepository {
     public void deleteMovie(Movie movie) {
         movieDeleteDisposable = Completable.fromRunnable(() -> movieDAO.delete(movie))
                 .subscribeOn(Schedulers.single())
-                .subscribe(() -> Log.v(TAG, String.format("Movie(id = \'%d\') is deleted", movie.getId())));
+                .subscribe(() -> Log.v(TAG, String.format("Movie(id = \'%d\') is deleted", movie.getId())),
+                        Throwable::printStackTrace);
     }
 
     @Override
     public void addMovie(Movie movie) {
         movieAddDisposable = Completable.fromRunnable(() -> movieDAO.insert(movie))
                 .subscribeOn(Schedulers.single())
-                .subscribe(() -> Log.v(TAG, String.format("Movie(id = \'%d\') is added", movie.getId())));
+                .subscribe(() -> Log.v(TAG, String.format("Movie(id = \'%d\') is added", movie.getId())),
+                        Throwable::printStackTrace);
     }
 }
